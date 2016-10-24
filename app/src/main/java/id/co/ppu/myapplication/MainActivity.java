@@ -62,13 +62,28 @@ public class MainActivity extends AppCompatActivity implements
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                Location lastLocation =
-                        LocationServices.FusedLocationApi.getLastLocation(
-                                mGoogleApiClient);
+                try {
+                    Location lastLocation =
+                            LocationServices.FusedLocationApi.getLastLocation(
+                                    mGoogleApiClient);
 
-                LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                setTitle(latLng.toString());
-//                updateLoc(latLng);
+                    if (lastLocation == null) {
+                        Toast.makeText(MainActivity.this, "lastLocation is null", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+
+                    if (latLng == null) {
+                        Toast.makeText(MainActivity.this, "latLng is null", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    setTitle(latLng.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
